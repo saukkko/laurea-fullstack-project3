@@ -16,8 +16,7 @@ await mongoose
 
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
-  user_id: { type: Number, unique: true, required: true },
-  dob: Number,
+  id: { type: Number, unique: true, required: true },
 });
 
 export const User = mongoose.model("users", userSchema);
