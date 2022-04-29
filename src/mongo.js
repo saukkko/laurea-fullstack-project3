@@ -2,21 +2,25 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 dotenv.config();
 
-const mongoDb = new URL(`mongodb+srv://${process.env.DB_ADDRESS}`);
-mongoDb.pathname = process.env.DB_NAME;
-mongoDb.username = process.env.DB_USER;
-mongoDb.password = process.env.DB_PW;
+const mongoUrl = new URL(`mongodb+srv://${process.env.DB_ADDRESS}`);
+mongoUrl.pathname = process.env.DB_NAME;
+mongoUrl.username = process.env.DB_USER;
+mongoUrl.password = process.env.DB_PW;
 
 await mongoose
-  .connect(mongoDb.href, {
+  .connect(mongoUrl.href, {
     ssl: true,
     family: 4,
   })
   .catch(console.error);
 
 const userSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  id: { type: Number, unique: true, required: true },
+  username: { type: String, required: true, unique: true },
+  name: String,
+  encodedPassword: String,
 });
+
+export const findUserByUsername = async (username) =>
+  User.findOne({ username: username }).catch(console.error);
 
 export const User = mongoose.model("users", userSchema);

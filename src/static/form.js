@@ -64,8 +64,10 @@ window.onload = () => {
           const response = JSON.parse(data);
           displayResults(response);
         } catch (err) {
-          if (err instanceof SyntaxError && err.message.includes("JSON"))
+          if (err instanceof SyntaxError && err.message.includes("JSON")) {
             console.log(err);
+            console.log(data);
+          }
         }
       });
   };
