@@ -20,8 +20,10 @@ app.use(express.text({ type: "application/json" }));
 app.use(validateHeaders, validateJSON);
 app.use(express.static("./src/static", { maxAge: 3600 * 1000 * 0.5 }));
 
+// Apply the routes imported from routes.js
 app.use(router);
 
+// "Catch them all" route. Sends 404 - Not found
 app.all("*", (req, res) => res.sendStatus(404));
 
 app.listen(PORT, () => console.log(`Express server listening on port ${PORT}`));

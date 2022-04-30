@@ -1,4 +1,5 @@
 /**
+ * Helper function to send consistently formatted response
  *
  * @param {import("express").Response} res
  * @param {number} statusCode
@@ -12,7 +13,7 @@ export const sendApiResponse = (res, statusCode, message, data) => {
   if (statusCode >= 300 && statusCode <= 399) title = "redirect";
   if (statusCode >= 400 && statusCode <= 599) title = "error";
 
-  res.status(statusCode).send({
+  res.status(statusCode).json({
     code: res.statusCode,
     title: title,
     message: message,
@@ -21,6 +22,8 @@ export const sendApiResponse = (res, statusCode, message, data) => {
 };
 
 /**
+ * Middleware function to pass into main express app. This parses the Headers and
+ * enforces content-type to application/json
  *
  * @param {import("express").Request} req
  * @param {import("express").Response} res
@@ -41,6 +44,8 @@ export const validateHeaders = (req, res, next) => {
 };
 
 /**
+ * Middleware function to pass into main express app. This function parses request
+ * body when body is empty and the method is NOT GET, OPTIONS or DELETE
  *
  * @param {import("express").Request} req
  * @param {import("express").Response} res
@@ -48,9 +53,11 @@ export const validateHeaders = (req, res, next) => {
  */
 
 export const validateJSON = (req, res, next) => {
-  // If req.body is empty and method is GET or DELETE, skip JSON validation
+  // If req.body is empty and method is GET, OPTIONS or DELETE, skip JSON validation
   if (
-    (req.method === "GET" || req.method === "DELETE") &&
+    (req.method === "GET" ||
+      req.method === "OPTIONS" ||
+      req.method === "DELETE") &&
     Object.keys(req.body).length === 0
   )
     return next();

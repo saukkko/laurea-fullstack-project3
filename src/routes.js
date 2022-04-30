@@ -27,10 +27,12 @@ router.param("id", (req, res, next, id, paramName) => {
       param_value: id,
       param_length: id.length,
     });
-    //next(err.message); // We can't use this if we use custom error response
   }
 });
 
+/**
+ * Return all users in collection that matches the User -schema.
+ */
 router.get("/api/getall", (req, res) => {
   User.find()
     .all()
@@ -41,6 +43,9 @@ router.get("/api/getall", (req, res) => {
     );
 });
 
+/**
+ * Returns single user queried by ID
+ */
 router.get("/api/:id", (req, res) => {
   User.findById(req.params.id)
     .then((user) =>
@@ -59,6 +64,9 @@ router.get("/api/:id", (req, res) => {
     });
 });
 
+/**
+ * Adds new user
+ */
 router.post("/api/add", async (req, res) => {
   createUser(JSON.parse(req.body))
     .then((user) =>
@@ -71,6 +79,9 @@ router.post("/api/add", async (req, res) => {
     });
 });
 
+/**
+ * Updates the user by given ID
+ */
 router.patch("/api/update/:id", (req, res) => {
   const { name } = JSON.parse(req.body);
   const updateQry = { name: name };
@@ -85,6 +96,9 @@ router.patch("/api/update/:id", (req, res) => {
   });
 });
 
+/**
+ * Deletes the user by its id
+ */
 router.delete("/api/delete/:id", (req, res) => {
   User.findByIdAndDelete(req.params.id).then((user) =>
     user
@@ -95,8 +109,11 @@ router.delete("/api/delete/:id", (req, res) => {
 
 /**
  * This route is just extra work that I did because I find authentication interesting.
+ *
+ * The route sends credentials provided by client to userLogin function, which further
+ * checks if user has provided correct credentials. Returns the created user from
+ * database if successful or an error response.
  */
-
 router.post("/api/login", (req, res) => {
   // Parse request as username and plaintext password
   const { username, plaintext } = JSON.parse(req.body);

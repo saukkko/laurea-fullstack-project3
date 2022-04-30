@@ -87,7 +87,7 @@ export const createUser = async (userData, opts) => {
           derivedKey.toString("base64"),
         ].join(":");
 
-        // Create new instance of the Mongoose document model
+        // Create new instance of the Mongoose document model with values provided & calculated
         const user = new User({
           name: name,
           username: username,
