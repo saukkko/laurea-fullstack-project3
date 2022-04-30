@@ -5,6 +5,8 @@ window.onload = () => {
   const addButton = document.getElementById("add");
   const updateButton = document.getElementById("update");
   const deleteButton = document.getElementById("delete");
+  const loginButton = document.getElementById("login");
+  const resetButton = document.getElementById("reset");
 
   /**
    * Get all data
@@ -49,6 +51,14 @@ window.onload = () => {
     sendRequest(`/api/delete/${formData.id}`, "DELETE", null);
   });
 
+  /**
+   * Login
+   */
+  loginButton.addEventListener("click", () => {
+    const formData = readForm(form);
+    sendRequest("/api/login", "POST", JSON.stringify(formData));
+  });
+
   /* Helper functions */
   const sendRequest = (endpoint, method, payload) => {
     fetch(endpoint, {
@@ -64,16 +74,20 @@ window.onload = () => {
           const response = JSON.parse(data);
           displayResults(response);
         } catch (err) {
-          if (err instanceof SyntaxError && err.message.includes("JSON")) {
-            console.log(err);
-            console.log(data);
-          }
+          displayResults(err);
+        } finally {
+          resetButton.click();
         }
       });
   };
 
   const readForm = (form) => {
-    return { name: form.name.value, id: parseInt(form.id.value) };
+    return {
+      id: form.id.value || null,
+      name: form.name.value,
+      username: form.username.value,
+      plaintext: form.password.value,
+    };
   };
 
   const displayResults = (data) => {

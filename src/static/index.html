@@ -18,8 +18,20 @@
     <div class="pure-u-1">
       <form class="pure-form" action="#" method="post" id="form">
         <fieldset class="pure-group">
+          <input placeholder="ID" type="text" name="id" id="id" />
           <input placeholder="Name" type="text" name="name" id="name" />
-          <input placeholder="ID" type="number" name="id" id="id" />
+          <input
+            placeholder="Username"
+            type="text"
+            name="username"
+            id="username"
+          />
+          <input
+            placeholder="Password"
+            type="password"
+            name="password"
+            id="password"
+          />
         </fieldset>
         <input
           class="pure-button pure-button-primary"
@@ -51,6 +63,20 @@
           value="DELETE"
           id="delete"
         />
+        <input
+          class="pure-button pure-button-primary"
+          type="button"
+          value="LOGIN"
+          id="login"
+        />
+        <p>
+          <input
+            class="pure-button button-error"
+            type="reset"
+            value="RESET FORM"
+            id="reset"
+          />
+        </p>
       </form>
       <div id="box"><pre id="response"></pre></div>
     </div>
