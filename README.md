@@ -1,5 +1,7 @@
 # Full Stack -sovelluskehitys TO00BS65-3002
 
+Demo for this API and test page is available at https://sauli-users-api.herokuapp.com/
+
 ## Author
 
 Sauli Kylmänen
@@ -157,6 +159,8 @@ Log in with credentials. Payload must be valid JSON and Content-Type header must
 PATCH /api/update/:id
 
 Updates the user by id. Payload must contain the field name to be updated and be valid JSON. Content-Type header must be set to application/json
+
+NOTE: Currently only the `name` field can be updated. All other fields from payload are ignored.
 
 #### Examples
 
