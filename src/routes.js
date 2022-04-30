@@ -32,7 +32,11 @@ router.param("id", (req, res, next, id, paramName) => {
 router.get("/api/getall", (req, res) => {
   User.find()
     .all()
-    .then((data) => sendApiResponse(res, 200, "GET OK", data));
+    .then((data) =>
+      data.length > 0
+        ? sendApiResponse(res, 200, "GET OK", data)
+        : sendApiResponse(res, 404, "No results", data)
+    );
 });
 
 router.get("/api/:id", (req, res) => {
