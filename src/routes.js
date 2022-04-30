@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { sendApiResponse } from "./utils.js";
 import { createUser, userLogin } from "./auth.js";
-import { User, findUserByUsername } from "./mongo.js";
+import { User, findUserByUsername, isValidObjectId } from "./mongo.js";
 
 // Use router middleware from express and export it
 export const router = Router();
@@ -16,6 +16,8 @@ router.param("id", (req, res, next, id, paramName) => {
     if (!isNaN(id) && (Number(id) < 0 || !isFinite(Number(id))))
       throw new Error("ID parameter value out of range");
 
+    if (!isValidObjectId(id))
+      throw new Error("ID parameter provided is not valid ObjectID");
     // If none of the above checks throw an error, go to next route
     next();
   } catch (err) {
@@ -59,14 +61,14 @@ router.get("/api/:id", (req, res) => {
 
 router.post("/api/add", async (req, res) => {
   createUser(JSON.parse(req.body))
-    .catch((err) => {
-      if (err) return sendApiResponse(res, 400, err.message, null);
-    })
     .then((user) =>
       user
         ? sendApiResponse(res, 201, "POST OK", user)
         : sendApiResponse(res, 400, "Unkown error", null)
-    );
+    )
+    .catch((err) => {
+      if (err) return sendApiResponse(res, 400, err.message, null);
+    });
 });
 
 router.patch("/api/update/:id", (req, res) => {

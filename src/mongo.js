@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema({
   encodedPassword: String,
 });
 
+export const isValidObjectId = mongoose.isValidObjectId;
+export const User = mongoose.model("users", userSchema);
 export const findUserByUsername = async (username) =>
   User.findOne({ username: username }).catch(console.error);
-
-export const User = mongoose.model("users", userSchema);
